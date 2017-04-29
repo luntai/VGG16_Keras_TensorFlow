@@ -1,13 +1,12 @@
 VGG16_Keras_TensorFlow
 ====  
 This is a image classification by VGG16 pre-trained model.
--------  
 # Envoriment #
   Python3.5
   Keras2.0
   TensorFlow
   Windows10
-  Most py-package (such like numpy or cv2...) you can install by pip install xx.whl from here. http://www.lfd.uci.edu/~gohlke/pythonlibs/
+  Most py-package (such like numpy or cv2...) you can install by pip install xx.whl from [here.](http://www.lfd.uci.edu/~gohlke/pythonlibs/ "悬停显示")  
 
 # Used Files #
   model/synset_words.txt : map class id (which is equal to line id) to synset_id and human words.
