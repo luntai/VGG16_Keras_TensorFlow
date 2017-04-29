@@ -1,5 +1,6 @@
-# VGG16_Keras_TensorFlow
-# This is a image classification by VGG16 pre-trained model.#
+VGG16_Keras_TensorFlow
+====  
+# This is a image classification by VGG16 pre-trained model.
 
 # Envoriment #
   Python3.5
