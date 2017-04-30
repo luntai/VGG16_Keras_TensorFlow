@@ -26,5 +26,5 @@ This is a image classification by VGG16 pre-trained model.
   About model you can find in [Github-Glist.](https://gist.github.com/baraldilorenzo/07d7802847aaad0a35d3)<br />
   About VGG16 network structure find in [here.](http://ethereon.github.io/netscope/#/gist/dc5003de6943ea5a6b8b)<br />
 
-# #### #
-  If it helps you, please give me a *star*. Thks.
+# Please #
+  Give me a *star*. Thks.
