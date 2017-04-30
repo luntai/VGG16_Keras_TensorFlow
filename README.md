@@ -8,6 +8,10 @@ This is a image classification by VGG16 pre-trained model.
   Windows10<br />
   Most py-package (such like numpy or cv2...) you can install by pip install xx.whl from [here.](http://www.lfd.uci.edu/~gohlke/pythonlibs/ "pythonlibs")  
 
+# Steps
+  Download the weight file 'vgg16_weights_tf_dim_ordering_tf_kernels.h5'. In [here](https://github.com/fchollet/deep-learning-models/releases) and download it.</br>
+  Put the weight file into data/model
+  
 # Used Files #
   _model/synset_words.txt_ : map class id (which is equal to line id) to synset_id and human words.
                            For example, If you get the prediction id is 281, then you should out put the 281th content in                 synset_words.txt.
