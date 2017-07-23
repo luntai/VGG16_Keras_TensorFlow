@@ -9,9 +9,9 @@ Windows10<br />
 Most py-package (such like numpy or cv2...) you can install by pip install xx.whl from [here.](http://www.lfd.uci.edu/~gohlke/pythonlibs/ "pythonlibs")  
 
 # Steps #
-[Find and download](https://github.com/fchollet/deep-learning-models/releases)
-the weight file 'vgg16_weights_tf_dim_ordering_tf_kernels.h5' into the
-directory ./data/model.
+main.py will attempt to download the vgg16 model weights into the directory ./data/model/.  If unsuccessful,
+[find and download](https://github.com/fchollet/deep-learning-models/releases)
+the weight file 'vgg16_weights_tf_dim_ordering_tf_kernels.h5' manually.
   
 # Used Files #
 _model/synset_words.txt_ : map class id (which is equal to line id) to synset_id and human words.

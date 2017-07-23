@@ -90,6 +90,21 @@ def compile_model(model):
     return model
 
 
+
+def get_or_download_model():
+    import os
+    vgg16_link = "https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg16_weights_tf_dim_ordering_tf_kernels.h5"
+    vgg16_path = os.path.join('.', 'data', 'model', 'vgg16_weights_tf_dim_ordering_tf_kernels.h5')
+    if not os.path.exists(vgg16_path):
+        print("Attempting to download the vgg16 model (528 MB) ..")
+        from urllib.request import urlretrieve
+        urlretrieve(vgg16_link, vgg16_path)
+        assert os.path.exists(vgg16_path)
+        print("Model downloaded:", vgg16_path)
+    return vgg16_path
+        
+
+
 if __name__ == "__main__":
 
     import matplotlib.pyplot as plt
@@ -109,7 +124,8 @@ if __name__ == "__main__":
     im = im[None, :, :, :]
 
     # Test pretrained model
-    model = VGG_16('./data/model/vgg16_weights_tf_dim_ordering_tf_kernels.h5')
+    model_weights = get_or_download_model()
+    model = VGG_16(model_weights)
     out = model.predict(im)
 
     # descend sort prediction, and find top-3 classes
