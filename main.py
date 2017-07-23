@@ -1,10 +1,9 @@
-from keras.models import Sequential
-from keras.layers.core import Flatten, Dense, Dropout
-from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D
-from keras.optimizers import SGD
 
 import cv2
 import numpy as np
+from keras.models import Sequential
+from keras.layers.core import Flatten, Dense, Dropout
+from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
 
 from keras import backend as K
 K.set_image_dim_ordering('tf')
@@ -17,39 +16,39 @@ image_dim_ordering in 'th' mode the channels dimension (the depth) is at index 1
 def VGG_16(weights_path=None):
     model = Sequential()
     model.add(ZeroPadding2D((1, 1), input_shape=(224, 224, 3)))
-    model.add(Convolution2D(64, 3, 3, activation='relu'))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(64, 3, 3, activation='relu'))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
     model.add(MaxPooling2D((2, 2), strides=(2, 2)))
 
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(128, 3, 3, activation='relu'))
+    model.add(Conv2D(128, (3, 3), activation='relu'))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(128, 3, 3, activation='relu'))
+    model.add(Conv2D(128, (3, 3), activation='relu'))
     model.add(MaxPooling2D((2, 2), strides=(2, 2)))
 
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(256, 3, 3, activation='relu'))
+    model.add(Conv2D(256, (3, 3), activation='relu'))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(256, 3, 3, activation='relu'))
+    model.add(Conv2D(256, (3, 3), activation='relu'))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(256, 3, 3, activation='relu'))
+    model.add(Conv2D(256, (3, 3), activation='relu'))
     model.add(MaxPooling2D((2, 2), strides=(2, 2)))
 
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(Conv2D(512, (3, 3), activation='relu'))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(Conv2D(512, (3, 3), activation='relu'))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(Conv2D(512, (3, 3), activation='relu'))
     model.add(MaxPooling2D((2, 2), strides=(2, 2)))
 
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(Conv2D(512, (3, 3), activation='relu'))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(Conv2D(512, (3, 3), activation='relu'))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(Conv2D(512, (3, 3), activation='relu'))
     model.add(MaxPooling2D((2, 2), strides=(2, 2)))
 
     model.add(Flatten())
@@ -65,7 +64,7 @@ def VGG_16(weights_path=None):
     return model
 
 
-def get_classes():
+def get_class_labels():
     with open('./data/model/synset_words.txt', 'r') as f: 
         lines = f.readlines()
     return np.array(lines)
@@ -84,6 +83,13 @@ def parse_args():
     return args
 
 
+def compile_model(model):
+    from keras.optimizers import SGD
+    sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
+    model.compile(optimizer=sgd, loss='categorical_crossentropy')
+    return model
+
+
 if __name__ == "__main__":
 
     import matplotlib.pyplot as plt
@@ -100,17 +106,15 @@ if __name__ == "__main__":
     im[:, :, 0] -= 103.939
     im[:, :, 1] -= 116.779
     im[:, :, 2] -= 123.68
-    im = np.expand_dims(im, axis=0)
+    im = im[None, :, :, :]
 
     # Test pretrained model
     model = VGG_16('./data/model/vgg16_weights_tf_dim_ordering_tf_kernels.h5')
-    sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
-    model.compile(optimizer=sgd, loss='categorical_crossentropy')
     out = model.predict(im)
 
     # descend sort prediction, and find top-3 classes
     ordered_index = np.argsort(-out)[0]
-    all_classes = get_classes()
+    all_classes = get_class_labels()
     classes = '\n'.join(all_classes[ordered_index[0:3]])
 
     plt.figure(figsize=(10, 6))
